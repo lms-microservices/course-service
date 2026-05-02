@@ -6,6 +6,7 @@ import com.lms.course.dto.UpdateCourseRequest;
 import com.lms.course.entity.Course;
 import com.lms.course.enums.CourseStatus;
 import com.lms.course.enums.DifficultyLevel;
+import com.lms.course.exception.CourseNotFoundException;
 import com.lms.course.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class CourseService {
 
     public CourseResponse updateCourse(Long courseId, UpdateCourseRequest request, Long instructorId) {
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new CourseNotFoundException(courseId));
 
         if (!course.getInstructorId().equals(instructorId)) {
             throw new RuntimeException("You are not the owner of this course");
