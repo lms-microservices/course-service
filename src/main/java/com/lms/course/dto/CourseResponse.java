@@ -4,6 +4,9 @@ import com.lms.course.enums.CourseStatus;
 import com.lms.course.enums.DifficultyLevel;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
 public class CourseResponse {
     private Long courseId;
@@ -16,4 +19,11 @@ public class CourseResponse {
     private CourseStatus status;
     private Long instructorId;
     private Boolean featured;
+    private Long id;
+    private String instructorName;
+    private Double rating;
+    private Integer enrolledCount;
+    private List<LessonResponse> lessons;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

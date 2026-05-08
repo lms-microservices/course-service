@@ -25,6 +25,11 @@ public class Course {
     private String category;
     private String thumbnailUrl;
 
+    private Double rating = 0.0;
+    private Integer enrolledCount = 0;
+    private String instructorName;
+    private LocalDateTime updatedAt;
+
     @Enumerated(EnumType.STRING)
     private DifficultyLevel difficultyLevel;
 
