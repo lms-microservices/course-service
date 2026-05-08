@@ -2,8 +2,10 @@ package com.lms.course.service;
 
 import com.lms.course.dto.CourseResponse;
 import com.lms.course.dto.CreateCourseRequest;
+import com.lms.course.dto.LessonResponse;
 import com.lms.course.dto.UpdateCourseRequest;
 import com.lms.course.entity.Course;
+import com.lms.course.entity.Lesson;
 import com.lms.course.enums.CourseStatus;
 import com.lms.course.enums.DifficultyLevel;
 import com.lms.course.exception.CourseNotFoundException;
@@ -97,6 +99,7 @@ public class CourseService {
 
     private CourseResponse toResponse(Course course) {
         CourseResponse response = new CourseResponse();
+        response.setId(course.getCourseId());
         response.setCourseId(course.getCourseId());
         response.setTitle(course.getTitle());
         response.setDescription(course.getDescription());
@@ -106,7 +109,24 @@ public class CourseService {
         response.setDifficultyLevel(course.getDifficultyLevel());
         response.setStatus(course.getStatus());
         response.setInstructorId(course.getInstructorId());
+        response.setInstructorName(course.getInstructorName());
         response.setFeatured(course.getFeatured());
+        response.setRating(course.getRating());
+        response.setEnrolledCount(course.getEnrolledCount());
+        response.setCreatedAt(course.getCreatedAt());
+        response.setUpdatedAt(course.getUpdatedAt());
+        response.setLessons(course.getLessons() == null ? List.of() :
+                course.getLessons().stream().map(this::toLessonResponse).collect(Collectors.toList()));
         return response;
+    }
+    private LessonResponse toLessonResponse(Lesson lesson) {
+        LessonResponse r = new LessonResponse();
+        r.setId(lesson.getLessonId());
+        r.setTitle(lesson.getTitle());
+        r.setType(lesson.getType());
+        r.setDuration(lesson.getDuration());
+        r.setOrder(lesson.getPosition());
+        r.setContentUrl(lesson.getContentUrl());
+        return r;
     }
 }
