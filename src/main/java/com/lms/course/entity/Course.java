@@ -9,11 +9,16 @@ import java.util.List;
 
 @Entity
 @Table(name = "courses")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Course {
+//    @JsonIgnoreProperties({"lessons", "hibernateLazyInitializer"})
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "course_id", nullable = false)
+//    private Course course;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

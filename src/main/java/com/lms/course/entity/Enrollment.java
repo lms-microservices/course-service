@@ -2,6 +2,9 @@ package com.lms.course.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,13 +18,15 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "enrollments",
         uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "course_id"}))
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -34,12 +39,20 @@ public class Enrollment {
     @Column(name = "student_id", nullable = false)
     private Long studentId;
 
+    // Ignore the Hibernate proxy internals and the nested lessons to prevent recursion
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "lessons"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
     @Column(nullable = false)
     private LocalDateTime enrolledAt;
+
+    // This exposes "courseId" to the JSON response without breaking JPA mapping rules
+    @JsonProperty("courseId")
+    public Long getCourseId() {
+        return course != null ? course.getCourseId() : null;
+    }
 
     @PrePersist
     protected void onCreate() {

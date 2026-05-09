@@ -60,13 +60,15 @@ public class EnrollmentService {
         return enrollmentRepository.existsByStudentIdAndCourse_CourseId(studentId, courseId);
     }
 
+    @Transactional(readOnly = true)
     public List<Enrollment> getEnrollmentsByCourse(Long courseId) {
         courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException(courseId));
         return enrollmentRepository.findByCourse_CourseId(courseId);
     }
 
+    @Transactional(readOnly = true)
     public List<Enrollment> getEnrollmentsByStudent(Long studentId) {
         return enrollmentRepository.findByStudentId(studentId);
-    }
+     }
 }
