@@ -1,8 +1,10 @@
 package com.lms.course.seeder;
 
 import com.lms.course.entity.Course;
+import com.lms.course.entity.Lesson;
 import com.lms.course.enums.CourseStatus;
 import com.lms.course.enums.DifficultyLevel;
+import com.lms.course.enums.LessonType;
 import com.lms.course.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -430,7 +432,7 @@ public class CourseSeeder implements CommandLineRunner {
     private Course course(String title, String description, String category,
                           DifficultyLevel level, Double price,
                           String org, String instructorName, Double rating) {
-        return Course.builder()
+        Course course = Course.builder()
                 .title(title)
                 .description(description)
                 .category(category)
@@ -442,10 +444,38 @@ public class CourseSeeder implements CommandLineRunner {
                 .enrolledCount(0)
                 .featured(false)
                 .status(CourseStatus.PUBLISHED)
-                .thumbnailUrl("https://via.placeholder.com/300x200?text=" +
-                        title.replace(" ", "+"))
+                .thumbnailUrl(null)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .build();
+        course.setLessons(createLessons(course));
+        return course;
+    }
+
+    private List<Lesson> createLessons(Course course) {
+        return List.of(
+                lesson("Introduction", LessonType.VIDEO,
+                        "https://example.com/videos/intro", 12, 1, course),
+                lesson("Core Concepts", LessonType.VIDEO,
+                        "https://example.com/videos/core", 18, 2, course),
+                lesson("Reading Material", LessonType.TEXT,
+                        "https://example.com/text/notes", 8, 3, course),
+                lesson("Knowledge Check", LessonType.QUIZ,
+                        "https://example.com/quizzes/quiz", 5, 4, course),
+                lesson("Hands-on Project", LessonType.VIDEO,
+                        "https://example.com/videos/project", 22, 5, course)
+        );
+    }
+
+    private Lesson lesson(String title, LessonType type, String contentUrl,
+                          Integer duration, Integer position, Course course) {
+        return Lesson.builder()
+                .title(title)
+                .type(type)
+                .contentUrl(contentUrl)
+                .duration(duration)
+                .position(position)
+                .course(course)
                 .build();
     }
 }

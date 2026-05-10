@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lms.course.dto.ProgressResponse;
+import com.lms.course.dto.response.ProgressResponse;
 import com.lms.course.entity.Lesson;
 import com.lms.course.entity.LessonProgress;
 import com.lms.course.exception.CourseNotFoundException;
@@ -66,9 +66,13 @@ public class ProgressService {
         List<Lesson> allLessons = lessonRepository.findByCourse_CourseIdOrderByPositionAsc(courseId);
         int totalLessons = allLessons.size();
 
-        long completedCount = lessonProgressRepository
-                .countByStudentIdAndLesson_Course_CourseIdAndCompletedTrue(studentId, courseId);
+        List<Long> completedLessonIds = lessonProgressRepository
+                .findByStudentIdAndLesson_Course_CourseIdAndCompletedTrue(studentId, courseId)
+                .stream()
+                .map(lp -> lp.getLesson().getLessonId())
+                .toList();
 
+        int completedCount = completedLessonIds.size();
         double percentage = totalLessons == 0 ? 0.0
                 : Math.round((completedCount * 100.0 / totalLessons) * 100.0) / 100.0;
 
@@ -76,7 +80,7 @@ public class ProgressService {
                 .courseId(courseId)
                 .studentId(studentId)
                 .totalLessons(totalLessons)
-                .completedLessons((int) completedCount)
+                .completedLessons(completedLessonIds)
                 .progressPercentage(percentage)
                 .build();
     }

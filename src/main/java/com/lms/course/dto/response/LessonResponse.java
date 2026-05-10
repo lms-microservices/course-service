@@ -1,4 +1,4 @@
-package com.lms.course.dto;
+package com.lms.course.dto.response;
 
 import com.lms.course.enums.LessonType;
 import lombok.Data;

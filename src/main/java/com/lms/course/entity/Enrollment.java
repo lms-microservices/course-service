@@ -2,6 +2,8 @@ package com.lms.course.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,12 +36,18 @@ public class Enrollment {
     @Column(name = "student_id", nullable = false)
     private Long studentId;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "lessons"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
     @Column(nullable = false)
     private LocalDateTime enrolledAt;
+
+    @JsonProperty("courseId")
+    public Long getCourseId() {
+        return course != null ? course.getCourseId() : null;
+    }
 
     @PrePersist
     protected void onCreate() {

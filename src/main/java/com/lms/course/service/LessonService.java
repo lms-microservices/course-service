@@ -1,6 +1,6 @@
 package com.lms.course.service;
 
-import com.lms.course.dto.CreateLessonRequest;
+import com.lms.course.dto.request.CreateLessonRequest;
 import com.lms.course.entity.Course;
 import com.lms.course.entity.Lesson;
 import com.lms.course.repository.CourseRepository;

@@ -1,4 +1,4 @@
-package com.lms.course.dto;
+package com.lms.course.dto.request;
 
 import com.lms.course.enums.LessonType;
 import jakarta.validation.constraints.*;

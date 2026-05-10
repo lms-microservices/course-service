@@ -1,9 +1,9 @@
 package com.lms.course.service;
 
+import com.lms.course.client.NotificationClient;
 import com.lms.course.entity.Course;
 import com.lms.course.entity.Enrollment;
 import com.lms.course.exception.CourseNotFoundException;
-import com.lms.course.feign.NotificationClient;
 import com.lms.course.repository.CourseRepository;
 import com.lms.course.repository.EnrollmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,12 @@ public class EnrollmentService {
 
         Enrollment saved = enrollmentRepository.save(enrollment);
 
-        // Notify student via notification-service (Feign call)
+        notifyStudent(studentId, course);
+
+        return saved;
+    }
+
+    private void notifyStudent(Long studentId, Course course) {
         try {
             Map<String, Object> payload = new HashMap<>();
             payload.put("userId", studentId);
@@ -48,12 +53,11 @@ public class EnrollmentService {
             payload.put("title", "Enrollment Confirmed");
             payload.put("body", "You have successfully enrolled in: " + course.getTitle());
             notificationClient.sendNotification(payload);
+            log.info("Notification sent via Feign | student={} course={}", studentId, course.getCourseId());
         } catch (Exception ex) {
             log.warn("Failed to send enrollment notification for studentId={}, courseId={}: {}",
-                    studentId, courseId, ex.getMessage());
+                    studentId, course.getCourseId(), ex.getMessage());
         }
-
-        return saved;
     }
 
     public boolean isEnrolled(Long courseId, Long studentId) {

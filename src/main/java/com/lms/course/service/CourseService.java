@@ -1,9 +1,9 @@
 package com.lms.course.service;
 
-import com.lms.course.dto.CourseResponse;
-import com.lms.course.dto.CreateCourseRequest;
-import com.lms.course.dto.LessonResponse;
-import com.lms.course.dto.UpdateCourseRequest;
+import com.lms.course.dto.response.CourseResponse;
+import com.lms.course.dto.request.CreateCourseRequest;
+import com.lms.course.dto.response.LessonResponse;
+import com.lms.course.dto.request.UpdateCourseRequest;
 import com.lms.course.entity.Course;
 import com.lms.course.entity.Lesson;
 import com.lms.course.enums.CourseStatus;

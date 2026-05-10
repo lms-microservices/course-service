@@ -1,11 +1,11 @@
-package com.lms.course.dto;
+package com.lms.course.dto.request;
 
 import com.lms.course.enums.DifficultyLevel;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class UpdateCourseRequest {
+public class CreateCourseRequest {
 
     @NotBlank(message = "Title is required")
     private String title;

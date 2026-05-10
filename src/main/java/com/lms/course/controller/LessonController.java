@@ -1,6 +1,6 @@
 package com.lms.course.controller;
 
-import com.lms.course.dto.CreateLessonRequest;
+import com.lms.course.dto.request.CreateLessonRequest;
 import com.lms.course.entity.Lesson;
 import com.lms.course.service.LessonService;
 import jakarta.validation.Valid;

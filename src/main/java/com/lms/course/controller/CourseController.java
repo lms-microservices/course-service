@@ -1,8 +1,8 @@
 package com.lms.course.controller;
 
-import com.lms.course.dto.CourseResponse;
-import com.lms.course.dto.CreateCourseRequest;
-import com.lms.course.dto.UpdateCourseRequest;
+import com.lms.course.dto.response.CourseResponse;
+import com.lms.course.dto.request.CreateCourseRequest;
+import com.lms.course.dto.request.UpdateCourseRequest;
 import com.lms.course.enums.DifficultyLevel;
 import com.lms.course.service.CourseService;
 import jakarta.validation.Valid;
@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -65,9 +67,13 @@ public class CourseController {
     }
 
     @DeleteMapping("/{courseId}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable Long courseId) {
+    public ResponseEntity<Map<String, Boolean>> deleteCourse(@PathVariable Long courseId) {
         courseService.deleteCourse(courseId);
-        return ResponseEntity.noContent().build();
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("success", true);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/instructor")
